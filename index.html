@@ -30,13 +30,11 @@ h1{font-size:20px;font-weight:400;margin:0}
 .copy{font-size:7px;line-height:1.12}
 .copy a{color:var(--red);text-decoration:none}
 .copy a:hover{text-decoration:underline}
-.spacer .front{display:flex;align-items:center;justify-content:center}
-.spacer .back{display:none}
+.spacer .face{display:flex;align-items:center;justify-content:center}
 .spacer .copy{text-align:center;font-size:clamp(26px,3vw,48px)}
 .video-card{position:relative;z-index:1}
 .video-card.hero{position:fixed;z-index:20;margin:0;transition:top .65s cubic-bezier(.22,.7,.2,1),left .65s cubic-bezier(.22,.7,.2,1),width .65s cubic-bezier(.22,.7,.2,1),height .65s cubic-bezier(.22,.7,.2,1),box-shadow .65s ease;box-shadow:0 14px 45px rgba(0,0,0,.22);will-change:top,left,width,height}
 .video-card.hero .inner{transition:none}
-.video-front.movie-ended{opacity:1}
 .hero-quote{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:9%;text-align:center;background:rgba(255,255,255,.97);opacity:0;transition:opacity .4s ease;pointer-events:none}
 .hero-quote.show{opacity:1;pointer-events:auto}
 .hero-quote .quote-text{font-size:clamp(20px,3.6vw,42px);line-height:1.08;max-width:90%}
@@ -60,6 +58,7 @@ h1{font-size:20px;font-weight:400;margin:0}
   body{padding:10px}
   .grid{grid-template-columns:repeat(4,1fr)}
   .card.mobile-open{position:relative;z-index:30;transform:scale(2);box-shadow:0 8px 28px rgba(0,0,0,.18)}
+  .card.mobile-open:after{content:"";position:absolute;inset:0;border:1px solid #111;pointer-events:none}
   .card.mobile-open .copy{font-size:8px;line-height:1.14}
   .card.mobile-open .inner{background:#fff}
   .card.mobile-open:nth-child(4n+1){transform-origin:left center}
@@ -209,10 +208,9 @@ gtag('config','G-4FJQWFFPBM');
 <div class="hint">Click a square to turn it over. Click again to return.</div>
 <script>
 const heroCard=document.querySelector('.video-card');
-const heroFront=heroCard.querySelector('.video-front');
-const heroVideo=heroCard.querySelector('video');
 const heroShade=document.querySelector('.hero-shade');
 const heroQuote=document.querySelector('.hero-quote');
+const heroVideo=heroCard.querySelector('video');
 
 document.querySelectorAll('.card:not(.video-card)').forEach(card=>{
   card.addEventListener('click',e=>{
@@ -286,14 +284,12 @@ function openHero(){
 }
 
 function showQuote(){
-  heroFront.classList.add('movie-ended');
   if(heroState!=='hero') return;
   heroQuote.classList.add('show');
   heroState='quote';
 }
 
 function closeHero(){
-  heroFront.classList.remove('movie-ended');
   if(heroState!=='quote') return;
   heroQuote.classList.remove('show');
   heroShade.classList.remove('show');
