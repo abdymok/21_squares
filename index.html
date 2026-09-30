@@ -265,6 +265,7 @@ function heroTarget(){
 
 function openHero(){
   if(heroState!=='square') return;
+  heroVideo.play().catch(()=>{});
   originRect=heroCard.getBoundingClientRect();
   const target=heroTarget();
   if(!target) return;
