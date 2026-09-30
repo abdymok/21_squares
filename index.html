@@ -24,6 +24,15 @@ h1{font-size:20px;font-weight:400;margin:0}
 .copy a:hover{text-decoration:underline}
 .spacer .face{display:flex;align-items:center;justify-content:center}
 .spacer .copy{text-align:center;font-size:clamp(26px,3vw,48px)}
+.video-card.hero{position:fixed;z-index:20;margin:0;transition:top .65s cubic-bezier(.2,.7,.2,1),left .65s cubic-bezier(.2,.7,.2,1),width .65s cubic-bezier(.2,.7,.2,1),height .65s cubic-bezier(.2,.7,.2,1),box-shadow .65s ease}
+.video-card.hero .inner{transition:transform .55s ease}
+.hero-quote{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:8%;text-align:center;background:rgba(255,255,255,.94);opacity:0;transition:opacity .7s ease;pointer-events:none}
+.hero-quote.show{opacity:1}
+.hero-quote .quote-text{font-size:clamp(28px,5vw,68px);line-height:1.08;max-width:900px}
+.hero-quote .quote-text span{display:block}
+.hero-quote .quote-text span+span{margin-top:.22em}
+.hero-shade{position:fixed;inset:0;z-index:19;background:rgba(0,0,0,0);pointer-events:none;transition:background .65s ease}
+.hero-shade.show{background:rgba(0,0,0,.18);pointer-events:auto}
 .hint{max-width:1400px;margin:10px auto 0;font-size:12px;color:#666}
 @media(max-width:800px){
   body{padding:10px}
@@ -163,34 +172,87 @@ gtag('config','G-4FJQWFFPBM');
     <div class="face back"><div class="copy">After a month of <a href='https://abdymok.substack.com/p/day-1680' target='_blank' rel='noopener'>261 hours of air alerts</a>, ruined towns and another night of war, the poet remembers what the politicians forget.</div></div>
   </div>
 </article>
-<article class="card spacer video-card" aria-label="21">
+<article class="card spacer video-card" aria-label="20">
   <div class="inner">
     <div class="face front video-front">
       <video autoplay muted playsinline preload="auto">
         <source src="21-running.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="face back"><div class="copy">21</div></div>
+    <div class="face back"><div class="copy">20</div></div>
+    <div class="hero-quote"><div class="quote-text"><span>Ukraine is not Z.</span><span>And we are still here.</span></div></div>
   </div>
 </article>
+<div class="hero-shade"></div>
 </main>
 <div class="hint">Click a square to turn it over. Click again to return.</div>
 <script>
-document.querySelectorAll('.card').forEach(card=>{
-  card.addEventListener('click',e=>{
-    if(e.target.closest('a')) return;
-    const video=card.querySelector('video');
-    const wasFlipped=card.classList.contains('flipped');
-    card.classList.toggle('flipped');
-    if(video && wasFlipped && video.ended){
-      video.currentTime=0;
-      video.play().catch(()=>{});
-    }
+const heroCard=document.querySelector('.video-card');
+const heroShade=document.querySelector('.hero-shade');
+const heroQuote=document.querySelector('.hero-quote');
+const heroVideo=heroCard.querySelector('video');
+
+function openHero(){
+  if(heroCard.classList.contains('hero')) return;
+  const r=heroCard.getBoundingClientRect();
+  heroCard.style.top=r.top+'px';
+  heroCard.style.left=r.left+'px';
+  heroCard.style.width=r.width+'px';
+  heroCard.style.height=r.height+'px';
+  heroCard.classList.add('hero');
+  heroShade.classList.add('show');
+  requestAnimationFrame(()=>{
+    const w=Math.min(window.innerWidth*.82,1100);
+    const h=Math.min(window.innerHeight*.78,800);
+    heroCard.style.width=w+'px';
+    heroCard.style.height=h+'px';
+    heroCard.style.left=((window.innerWidth-w)/2)+'px';
+    heroCard.style.top=((window.innerHeight-h)/2)+'px';
   });
+}
+
+function closeHero(){
+  if(!heroCard.classList.contains('hero')) return;
+  const gridRect=heroCard.parentElement.getBoundingClientRect();
+  const cardRect=heroCard.getBoundingClientRect();
+  const colGap=10;
+  const mobileGap=window.innerWidth<=800?7:10;
+  const target=Array.from(document.querySelectorAll('.card')).find(c=>c!==heroCard && c.dataset.day==='1680');
+  const tr=target ? target.getBoundingClientRect() : null;
+  heroQuote.classList.remove('show');
+  heroShade.classList.remove('show');
+  if(tr){
+    heroCard.style.width=tr.width+'px';
+    heroCard.style.height=tr.height+'px';
+    heroCard.style.left=tr.right+mobileGap-tr.width+'px';
+    heroCard.style.top=tr.top+'px';
+  }
+  setTimeout(()=>{
+    heroCard.classList.remove('hero');
+    heroCard.style.top='';
+    heroCard.style.left='';
+    heroCard.style.width='';
+    heroCard.style.height='';
+  },700);
+}
+
+heroCard.addEventListener('click',e=>{
+  e.stopPropagation();
+  if(e.target.closest('a')) return;
+  if(!heroCard.classList.contains('hero')){
+    openHero();
+  }else{
+    closeHero();
+  }
 });
-document.querySelectorAll('.video-card video').forEach(video=>{
-  video.play().catch(()=>{});
+
+heroShade.addEventListener('click',closeHero);
+
+heroVideo.addEventListener('ended',()=>{
+  if(heroCard.classList.contains('hero')) heroQuote.classList.add('show');
 });
+
+heroVideo.play().catch(()=>{});
 </script>
 </body>
 </html>
