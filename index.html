@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>20 squares — September 2026</title>
 <meta name="description" content="September 2026 Ukraine@war — 20 squares.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--gap:10px;--red:#c40000;--black:#111;--paper:#fff}
 *{box-sizing:border-box}
@@ -32,7 +29,7 @@ header{max-width:1400px;margin:0 auto 18px}
   100%{transform:scaleX(1)}
 }
 .front img,.video-front video{width:100%;height:100%;display:block;object-fit:cover}
-.copy{font-size:clamp(11px,1.4vw,20px);line-height:1.18}
+.copy{font-size:20px;line-height:1.18}
 .copy a{color:var(--red);text-decoration:none}
 .copy a:hover{text-decoration:underline}
 .video-card .video-front{display:none}
@@ -40,9 +37,9 @@ header{max-width:1400px;margin:0 auto 18px}
 .video-card.hero .video-front{display:block}
 .video-card.hero .video-label{display:none}
 .video-card{position:relative;z-index:1}
-.video-card.hero{position:fixed;z-index:20;margin:0;transition:top .5s cubic-bezier(.22,.7,.2,1),left .5s cubic-bezier(.22,.7,.2,1),width .5s cubic-bezier(.22,.7,.2,1),height .5s cubic-bezier(.22,.7,.2,1),box-shadow .5s ease;box-shadow:0 8px 24px rgba(0,0,0,.14)}
+.video-card.hero{position:fixed;z-index:20;margin:0;transition:top .65s cubic-bezier(.22,.7,.2,1),left .65s cubic-bezier(.22,.7,.2,1),width .65s cubic-bezier(.22,.7,.2,1),height .65s cubic-bezier(.22,.7,.2,1),box-shadow .65s ease;box-shadow:0 14px 45px rgba(0,0,0,.22);will-change:top,left,width,height}
 .video-card.hero .inner{transition:none}
-.hero-quote{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:9%;text-align:center;background:rgba(255,255,255,.97);opacity:0;transition:opacity .25s ease;pointer-events:none}
+.hero-quote{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:9%;text-align:center;background:rgba(255,255,255,.97);opacity:0;transition:opacity .4s ease;pointer-events:none}
 .hero-quote.show{opacity:1;pointer-events:auto}
 .hero-quote .quote-text{font-size:clamp(20px,3.6vw,42px);line-height:1.08;max-width:90%}
 .hero-quote .quote-text span{display:block}
@@ -78,7 +75,7 @@ header{max-width:1400px;margin:0 auto 18px}
   .card.mobile-open:nth-child(4n+2),
   .card.mobile-open:nth-child(4n+3){transform-origin:center center}
 }
-@media(prefers-reduced-motion:reduce){.video-card.hero,.hero-quote{transition:none}.hero-shade{transition:none}}</style>
+</style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FJQWFFPBM"></script>
 <script>
 window.dataLayer=window.dataLayer||[];
@@ -199,7 +196,7 @@ function closeHero(){
     heroVideo.pause();
     heroVideo.currentTime=0;
     heroState='square';
-  },520);
+  },700);
 }
 heroCard.addEventListener('click',e=>{
   e.stopPropagation();
