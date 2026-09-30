@@ -32,7 +32,9 @@ h1{font-size:20px;font-weight:400;margin:0}
 .copy a{color:var(--red);text-decoration:none}
 .copy a:hover{text-decoration:underline}
 .video-card .video-front{display:none}
+.video-card .video-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#fff;font-size:clamp(26px,3vw,48px);z-index:2}
 .video-card.hero .video-front{display:block}
+.video-card.hero .video-label{display:none}
 .video-card{position:relative;z-index:1}
 .video-card.hero{position:fixed;z-index:20;margin:0;transition:top .65s cubic-bezier(.22,.7,.2,1),left .65s cubic-bezier(.22,.7,.2,1),width .65s cubic-bezier(.22,.7,.2,1),height .65s cubic-bezier(.22,.7,.2,1),box-shadow .65s ease;box-shadow:0 14px 45px rgba(0,0,0,.22);will-change:top,left,width,height}
 .video-card.hero .inner{transition:none}
@@ -98,7 +100,7 @@ gtag('config','G-4FJQWFFPBM');
 <article class="card" data-day="1678"><div class="inner"><div class="face front"><img src="1678.jpg" alt="September 2026, Day 1678"></div><div class="face back"><div class="copy">A second drone acts as a <a href='https://abdymok.substack.com/p/day-1678' target='_blank' rel='noopener'>flying relay</a> for the attacker.</div></div></div></article>
 <article class="card" data-day="1679"><div class="inner"><div class="face front"><img src="1679.jpg" alt="September 2026, Day 1679"></div><div class="face back"><div class="copy">The burning Academy brings it back to basics: <a href='https://abdymok.substack.com/p/day-1679' target='_blank' rel='noopener'>Ukraine is not Z</a>.</div></div></div></article>
 <article class="card" data-day="1680"><div class="inner"><div class="face front"><img src="1680.jpg" alt="September 2026, Day 1680"></div><div class="face back"><div class="copy">After <a href='https://abdymok.substack.com/p/day-1680' target='_blank' rel='noopener'>261 hours of air alerts</a>, the poet remembers what politicians forget.</div></div></div></article>
-<article class="card video-card" aria-label="20"><div class="inner"><div class="face front video-front"><video muted playsinline preload="auto"><source src="21-running.mp4" type="video/mp4"></video></div><div class="hero-quote"><div class="quote-text"><span>Ukraine is not Z.</span><span>And we are still here.</span></div></div></div></article>
+<article class="card video-card" aria-label="20"><div class="inner"><div class="video-label">20</div><div class="face front video-front"><video muted playsinline preload="auto"><source src="21-running.mp4" type="video/mp4"></video></div><div class="hero-quote"><div class="quote-text"><span>Ukraine is not Z.</span><span>And we are still here.</span></div></div></div></article>
 <div class="hero-shade"></div>
 </main>
 <div class="hint">Click or tap a square to turn it over.</div>
