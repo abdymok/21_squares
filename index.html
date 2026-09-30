@@ -58,9 +58,10 @@ h1{font-size:20px;font-weight:400;margin:0}
 @media (max-width:800px) and (orientation:portrait){
   body{padding:10px}
   .grid{grid-template-columns:repeat(4,1fr)}
-  .card.mobile-open{position:relative;z-index:30;transform:scale(1.95);box-shadow:0 8px 28px rgba(0,0,0,.18)}
+  .card.mobile-open{position:relative;z-index:30;transform:scale(1.95);box-shadow:0 8px 28px rgba(0,0,0,.18);outline:1px solid #111;outline-offset:-1px}
   .card.mobile-open .copy{font-size:10px;line-height:1.16}
   .card.mobile-open .inner{background:#fff}
+  .card.mobile-open:nth-child(-n+4){transform-origin:center top}
   .card.mobile-open:nth-child(4n+1){transform-origin:left center}
   .card.mobile-open:nth-child(4n){transform-origin:right center}
   .card.mobile-open:nth-child(4n+2),
@@ -208,6 +209,8 @@ gtag('config','G-4FJQWFFPBM');
 <div class="hint">Click a square to turn it over. Click again to return.</div>
 <script>
 const heroCard=document.querySelector('.video-card');
+const heroFront=heroCard.querySelector('.video-front');
+const heroVideo=heroCard.querySelector('video');
 const heroShade=document.querySelector('.hero-shade');
 const heroQuote=document.querySelector('.hero-quote');
 const heroVideo=heroCard.querySelector('video');
@@ -284,12 +287,14 @@ function openHero(){
 }
 
 function showQuote(){
+  heroFront.classList.add('movie-ended');
   if(heroState!=='hero') return;
   heroQuote.classList.add('show');
   heroState='quote';
 }
 
 function closeHero(){
+  heroFront.classList.remove('movie-ended');
   if(heroState!=='quote') return;
   heroQuote.classList.remove('show');
   heroShade.classList.remove('show');
