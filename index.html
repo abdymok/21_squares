@@ -17,7 +17,7 @@ h1{font-size:20px;font-weight:400;margin:0}
 .inner{position:relative;width:100%;height:100%;transition:transform .55s ease;transform-style:preserve-3d}
 .card.flipped .inner{transform:rotateY(180deg)}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid #111;background:#fff;overflow:hidden}
-.front img{width:100%;height:100%;display:block;object-fit:cover}
+.front img,.video-front video{width:100%;height:100%;display:block;object-fit:cover}
 .back{transform:rotateY(180deg);padding:9%;display:flex;align-items:center;justify-content:center;text-align:left}
 .copy{font-size:clamp(13px,1.35vw,21px);line-height:1.22}
 .copy a{color:var(--red);text-decoration:none}
@@ -163,9 +163,13 @@ gtag('config','G-4FJQWFFPBM');
     <div class="face back"><div class="copy">After a month of <a href='https://abdymok.substack.com/p/day-1680' target='_blank' rel='noopener'>261 hours of air alerts</a>, ruined towns and another night of war, the poet remembers what the politicians forget.</div></div>
   </div>
 </article>
-<article class="card spacer" aria-label="21">
+<article class="card spacer video-card" aria-label="21">
   <div class="inner">
-    <div class="face front"><div class="copy">21</div></div>
+    <div class="face front video-front">
+      <video autoplay muted playsinline preload="auto">
+        <source src="21-running.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="face back"><div class="copy">21</div></div>
   </div>
 </article>
@@ -175,8 +179,17 @@ gtag('config','G-4FJQWFFPBM');
 document.querySelectorAll('.card').forEach(card=>{
   card.addEventListener('click',e=>{
     if(e.target.closest('a')) return;
+    const video=card.querySelector('video');
+    const wasFlipped=card.classList.contains('flipped');
     card.classList.toggle('flipped');
+    if(video && wasFlipped && video.ended){
+      video.currentTime=0;
+      video.play().catch(()=>{});
+    }
   });
+});
+document.querySelectorAll('.video-card video').forEach(video=>{
+  video.play().catch(()=>{});
 });
 </script>
 </body>
