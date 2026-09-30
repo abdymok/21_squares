@@ -24,14 +24,15 @@ h1{font-size:20px;font-weight:400;margin:0}
 .copy a:hover{text-decoration:underline}
 .spacer .face{display:flex;align-items:center;justify-content:center}
 .spacer .copy{text-align:center;font-size:clamp(26px,3vw,48px)}
-.video-card.hero{position:fixed;z-index:20;margin:0;transition:top .65s cubic-bezier(.2,.7,.2,1),left .65s cubic-bezier(.2,.7,.2,1),width .65s cubic-bezier(.2,.7,.2,1),height .65s cubic-bezier(.2,.7,.2,1),box-shadow .65s ease}
+.video-card{transform-origin:center center;transition:transform .7s cubic-bezier(.22,.7,.2,1),box-shadow .7s ease;position:relative;z-index:1}
+.video-card.hero{z-index:20;box-shadow:0 18px 60px rgba(0,0,0,.25)}
 .video-card.hero .inner{transition:transform .55s ease}
-.hero-quote{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:8%;text-align:center;background:rgba(255,255,255,.94);opacity:0;transition:opacity .7s ease;pointer-events:none}
-.hero-quote.show{opacity:1}
+.hero-quote{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:8%;text-align:center;background:rgba(255,255,255,.94);opacity:0;transition:opacity .45s ease;pointer-events:none}
+.hero-quote.show{opacity:1;pointer-events:auto}
 .hero-quote .quote-text{font-size:clamp(28px,5vw,68px);line-height:1.08;max-width:900px}
 .hero-quote .quote-text span{display:block}
 .hero-quote .quote-text span+span{margin-top:.22em}
-.hero-shade{position:fixed;inset:0;z-index:19;background:rgba(0,0,0,0);pointer-events:none;transition:background .65s ease}
+.hero-shade{position:fixed;inset:0;z-index:19;background:rgba(0,0,0,0);pointer-events:none;transition:background .45s ease}
 .hero-shade.show{background:rgba(0,0,0,.18);pointer-events:auto}
 .hint{max-width:1400px;margin:10px auto 0;font-size:12px;color:#666}
 @media(max-width:800px){
@@ -191,68 +192,70 @@ const heroCard=document.querySelector('.video-card');
 const heroShade=document.querySelector('.hero-shade');
 const heroQuote=document.querySelector('.hero-quote');
 const heroVideo=heroCard.querySelector('video');
+let heroState='square';
+let originRect=null;
+let originCenter=null;
+
+function heroTransform(){
+  const w=Math.min(window.innerWidth*.82,1100);
+  const h=Math.min(window.innerHeight*.78,800);
+  const targetLeft=(window.innerWidth-w)/2;
+  const targetTop=(window.innerHeight-h)/2;
+  const scale=Math.min(w/originRect.width,h/originRect.height);
+  const dx=targetLeft+w/2-originCenter.x;
+  const dy=targetTop+h/2-originCenter.y;
+  return `translate(${dx}px,${dy}px) scale(${scale})`;
+}
 
 function openHero(){
-  if(heroCard.classList.contains('hero')) return;
-  const r=heroCard.getBoundingClientRect();
-  heroCard.style.top=r.top+'px';
-  heroCard.style.left=r.left+'px';
-  heroCard.style.width=r.width+'px';
-  heroCard.style.height=r.height+'px';
+  if(heroState!=='square') return;
+  originRect=heroCard.getBoundingClientRect();
+  originCenter={x:originRect.left+originRect.width/2,y:originRect.top+originRect.height/2};
   heroCard.classList.add('hero');
   heroShade.classList.add('show');
   requestAnimationFrame(()=>{
-    const w=Math.min(window.innerWidth*.82,1100);
-    const h=Math.min(window.innerHeight*.78,800);
-    heroCard.style.width=w+'px';
-    heroCard.style.height=h+'px';
-    heroCard.style.left=((window.innerWidth-w)/2)+'px';
-    heroCard.style.top=((window.innerHeight-h)/2)+'px';
+    heroCard.style.transform=heroTransform();
   });
+  heroState='hero';
+}
+
+function showQuote(){
+  if(heroState!=='hero') return;
+  heroQuote.classList.add('show');
+  heroState='quote';
 }
 
 function closeHero(){
-  if(!heroCard.classList.contains('hero')) return;
-  const gridRect=heroCard.parentElement.getBoundingClientRect();
-  const cardRect=heroCard.getBoundingClientRect();
-  const colGap=10;
-  const mobileGap=window.innerWidth<=800?7:10;
-  const target=Array.from(document.querySelectorAll('.card')).find(c=>c!==heroCard && c.dataset.day==='1680');
-  const tr=target ? target.getBoundingClientRect() : null;
+  if(heroState!=='quote') return;
   heroQuote.classList.remove('show');
   heroShade.classList.remove('show');
-  if(tr){
-    heroCard.style.width=tr.width+'px';
-    heroCard.style.height=tr.height+'px';
-    heroCard.style.left=tr.right+mobileGap-tr.width+'px';
-    heroCard.style.top=tr.top+'px';
-  }
+  heroCard.style.transform='none';
+  heroState='closing';
   setTimeout(()=>{
     heroCard.classList.remove('hero');
-    heroCard.style.top='';
-    heroCard.style.left='';
-    heroCard.style.width='';
-    heroCard.style.height='';
+    heroCard.style.transform='';
+    heroVideo.currentTime=0;
+    heroVideo.play().catch(()=>{});
+    heroState='square';
   },700);
 }
 
 heroCard.addEventListener('click',e=>{
   e.stopPropagation();
-  if(e.target.closest('a')) return;
-  if(!heroCard.classList.contains('hero')){
-    openHero();
-  }else{
-    closeHero();
-  }
+  if(heroState==='square') openHero();
+  else if(heroState==='hero') showQuote();
+  else if(heroState==='quote') closeHero();
 });
 
-heroShade.addEventListener('click',closeHero);
-
-heroVideo.addEventListener('ended',()=>{
-  if(heroCard.classList.contains('hero')) heroQuote.classList.add('show');
+heroShade.addEventListener('click',()=>{
+  if(heroState==='quote') closeHero();
 });
 
 heroVideo.play().catch(()=>{});
+
+window.addEventListener('resize',()=>{
+  if(heroState==='hero' || heroState==='quote') heroCard.style.transform=heroTransform();
+});
 </script>
 </body>
 </html>
