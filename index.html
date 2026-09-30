@@ -194,6 +194,13 @@ const heroCard=document.querySelector('.video-card');
 const heroShade=document.querySelector('.hero-shade');
 const heroQuote=document.querySelector('.hero-quote');
 const heroVideo=heroCard.querySelector('video');
+
+document.querySelectorAll('.card:not(.video-card)').forEach(card=>{
+  card.addEventListener('pointerup',e=>{
+    if(e.target.closest('a')) return;
+    card.classList.toggle('flipped');
+  },{passive:true});
+});
 let heroState='square';
 let originRect=null;
 
