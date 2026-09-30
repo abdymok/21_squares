@@ -197,7 +197,7 @@ gtag('config','G-4FJQWFFPBM');
 <article class="card spacer video-card" aria-label="20">
   <div class="inner">
     <div class="face front video-front">
-      <video autoplay muted playsinline preload="auto">
+      <video muted playsinline preload="auto">
         <source src="21-running.mp4" type="video/mp4">
       </video>
     </div>
@@ -268,6 +268,7 @@ function heroTarget(){
 function openHero(){
   if(heroState!=='square') return;
   heroVideo.currentTime=0;
+  heroVideo.muted=true;
   heroVideo.play().catch(()=>{});
   originRect=heroCard.getBoundingClientRect();
   const target=heroTarget();
