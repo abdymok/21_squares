@@ -13,12 +13,14 @@ body{font-family:Georgia,"Times New Roman",serif;padding:16px}
 header{max-width:1400px;margin:0 auto 14px}
 h1{font-size:20px;font-weight:400;margin:0}
 .grid{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:var(--gap)}
-.card{aspect-ratio:1/1;perspective:1000px;cursor:pointer}
-.inner{position:relative;width:100%;height:100%;transition:transform .55s ease;transform-style:preserve-3d;-webkit-transform-style:preserve-3d}
-.card.flipped .inner{transform:rotateY(180deg);-webkit-transform:rotateY(180deg)}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid #111;background:#fff;overflow:hidden;transform:translateZ(0);-webkit-transform:translateZ(0)}
+.card{aspect-ratio:1/1;perspective:1000px;-webkit-perspective:1000px;cursor:pointer}
+.inner{position:relative;width:100%;height:100%}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid #111;background:#fff;overflow:hidden;transition:transform .55s ease;-webkit-transition:-webkit-transform .55s ease}
+.front{transform:rotateY(0deg);-webkit-transform:rotateY(0deg)}
+.back{transform:rotateY(180deg);-webkit-transform:rotateY(180deg);padding:9%;display:flex;align-items:center;justify-content:center;text-align:left}
+.card.flipped .front{transform:rotateY(-180deg);-webkit-transform:rotateY(-180deg)}
+.card.flipped .back{transform:rotateY(0deg);-webkit-transform:rotateY(0deg)}
 .front img,.video-front video{width:100%;height:100%;display:block;object-fit:cover}
-.back{transform:rotateY(180deg) translateZ(1px);-webkit-transform:rotateY(180deg) translateZ(1px);padding:9%;display:flex;align-items:center;justify-content:center;text-align:left}
 .copy{font-size:clamp(13px,1.35vw,21px);line-height:1.22}
 .copy a{color:var(--red);text-decoration:none}
 .copy a:hover{text-decoration:underline}
