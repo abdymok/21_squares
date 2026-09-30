@@ -31,7 +31,8 @@ h1{font-size:20px;font-weight:400;margin:0}
 .copy{font-size:7px;line-height:1.12}
 .copy a{color:var(--red);text-decoration:none}
 .copy a:hover{text-decoration:underline}
-.video-card .video-front{display:block}
+.video-card .video-front{display:none}
+.video-card.hero .video-front{display:block}
 .video-card{position:relative;z-index:1}
 .video-card.hero{position:fixed;z-index:20;margin:0;transition:top .65s cubic-bezier(.22,.7,.2,1),left .65s cubic-bezier(.22,.7,.2,1),width .65s cubic-bezier(.22,.7,.2,1),height .65s cubic-bezier(.22,.7,.2,1),box-shadow .65s ease;box-shadow:0 14px 45px rgba(0,0,0,.22);will-change:top,left,width,height}
 .video-card.hero .inner{transition:none}
@@ -184,8 +185,8 @@ function closeHero(){
     heroCard.style.left='';
     heroCard.style.width='';
     heroCard.style.height='';
+    heroVideo.pause();
     heroVideo.currentTime=0;
-    heroVideo.play().catch(()=>{});
     heroState='square';
   },700);
 }
