@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>21 squares — September 2026</title>
-<meta name="description" content="September 2026 Ukraine@war — 21 squares.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>20 squares — September 2026</title>
+<meta name="description" content="September 2026 Ukraine@war — 20 squares.">
 <style>
 :root{--gap:10px;--red:#c40000;--black:#111;--paper:#fff}
 *{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:var(--paper);color:var(--black)}
 body{font-family:Georgia,"Times New Roman",serif;padding:16px}
 header{max-width:1400px;margin:0 auto 14px}
@@ -30,10 +31,7 @@ h1{font-size:20px;font-weight:400;margin:0}
 .copy{font-size:7px;line-height:1.12}
 .copy a{color:var(--red);text-decoration:none}
 .copy a:hover{text-decoration:underline}
-.spacer .face{display:flex;align-items:center;justify-content:center}
-.spacer .copy{text-align:center;font-size:clamp(26px,3vw,48px)}
 .video-card .video-front{display:block}
-.video-card .back{display:none}
 .video-card{position:relative;z-index:1}
 .video-card.hero{position:fixed;z-index:20;margin:0;transition:top .65s cubic-bezier(.22,.7,.2,1),left .65s cubic-bezier(.22,.7,.2,1),width .65s cubic-bezier(.22,.7,.2,1),height .65s cubic-bezier(.22,.7,.2,1),box-shadow .65s ease;box-shadow:0 14px 45px rgba(0,0,0,.22);will-change:top,left,width,height}
 .video-card.hero .inner{transition:none}
@@ -67,7 +65,8 @@ h1{font-size:20px;font-weight:400;margin:0}
   .card.mobile-open:nth-child(4n){transform-origin:right center}
   .card.mobile-open:nth-child(4n+2),
   .card.mobile-open:nth-child(4n+3){transform-origin:center center}
-}</style>
+}
+</style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FJQWFFPBM"></script>
 <script>
@@ -83,7 +82,7 @@ gtag('config','G-4FJQWFFPBM');
 <article class="card" data-day="1651">
   <div class="inner">
     <div class="face front"><img src="1651.jpg" alt="September 2026, Day 1651"></div>
-    <div class="face back"><div class="copy"><a href='https://abdymok.substack.com/p/day-1650' target='_blank' rel='noopener'>Jet-powered drones</a> are moving beyond ordinary interceptor speeds.</div></div>
+    <div class="face back"><div class="copy"><a href='https://abdymok.substack.com/p/day-1651' target='_blank' rel='noopener'>Jet-powered drones</a> are moving beyond ordinary interceptor speeds.</div></div>
   </div>
 </article>
 <article class="card" data-day="1652">
@@ -166,7 +165,7 @@ gtag('config','G-4FJQWFFPBM');
 </article>
 <article class="card" data-day="1673">
   <div class="inner">
-    <div class="face front"><img src="1673.jpg" alt="September 2026, Day 1673"></div>
+    <div class="face front"><img src="1673.jpg' alt="September 2026, Day 1673"></div>
     <div class="face back"><div class="copy">Zorelit is cheap compared with a missile. The <a href='https://abdymok.substack.com/p/day-1672-7a7' target='_blank' rel='noopener'>vapor trails</a> belong to the walk.</div></div>
   </div>
 </article>
@@ -194,39 +193,35 @@ gtag('config','G-4FJQWFFPBM');
     <div class="face back"><div class="copy">After <a href='https://abdymok.substack.com/p/day-1680' target='_blank' rel='noopener'>261 hours of air alerts</a>, the poet remembers what politicians forget.</div></div>
   </div>
 </article>
-<article class="card spacer video-card" aria-label="20">
+<article class="card video-card" aria-label="20">
   <div class="inner">
     <div class="face front video-front">
       <video muted playsinline preload="auto">
         <source src="21-running.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="face back"><div class="copy">20</div></div>
     <div class="hero-quote"><div class="quote-text"><span>Ukraine is not Z.</span><span>And we are still here.</span></div></div>
   </div>
 </article>
 <div class="hero-shade"></div>
 </main>
-<div class="hint">Click a square to turn it over. Click again to return.</div>
+<div class="hint">Click or tap a square to turn it over.</div>
 <script>
 const heroCard=document.querySelector('.video-card');
 const heroShade=document.querySelector('.hero-shade');
 const heroQuote=document.querySelector('.hero-quote');
 const heroVideo=heroCard.querySelector('video');
+const cards=[...document.querySelectorAll('.card:not(.video-card)')];
+const phone=matchMedia('(max-width:800px) and (orientation:portrait)');
 
-document.querySelectorAll('.card:not(.video-card)').forEach(card=>{
-  card.addEventListener('click',e=>{
-    if(e.target.closest('a')) return;
-    card.classList.add('flip-anim');
-    setTimeout(()=>{
-      card.classList.toggle('flipped');
-      if(window.matchMedia('(max-width:800px) and (orientation:portrait)').matches){
-        card.classList.toggle('mobile-open');
-      }
-    },120);
-    setTimeout(()=>card.classList.remove('flip-anim'),250);
-  });
-});
+cards.forEach(card=>card.addEventListener('click',e=>{
+  if(e.target.closest('a'))return;
+  const open=!card.classList.contains('flipped');
+  if(phone.matches)cards.forEach(c=>c.classList.remove('flipped','mobile-open'));
+  card.classList.toggle('flipped',open);
+  card.classList.toggle('mobile-open',open&&phone.matches);
+}));
+
 let heroState='square';
 let originRect=null;
 
@@ -240,39 +235,31 @@ function rowsAndCols(){
     card._rowTop=row;
   });
   tops.sort((a,b)=>a-b);
-  const rows=tops.map(top=>cards.filter(c=>c._rowTop===top).sort((a,b)=>a.getBoundingClientRect().left-b.getBoundingClientRect().left));
-  return rows;
+  return tops.map(top=>cards.filter(c=>c._rowTop===top).sort((a,b)=>a.getBoundingClientRect().left-b.getBoundingClientRect().left));
 }
 
 function heroTarget(){
   const rows=rowsAndCols();
   const rowStart=Math.max(0,Math.floor((rows.length-2)/2));
   const selectedRows=rows.slice(rowStart,rowStart+2);
-  if(selectedRows.length<2) return null;
+  if(selectedRows.length<2)return null;
   const count=Math.min(selectedRows[0].length,selectedRows[1].length);
   const colStart=Math.max(0,Math.floor((count-2)/2));
-  const a=selectedRows[0][colStart];
-  const b=selectedRows[0][colStart+1];
-  const c=selectedRows[1][colStart];
-  const d=selectedRows[1][colStart+1];
-  if(!a||!b||!c||!d) return null;
-  const ar=a.getBoundingClientRect(), br=b.getBoundingClientRect(), cr=c.getBoundingClientRect(), dr=d.getBoundingClientRect();
-  return {
-    left:Math.min(ar.left,br.left,cr.left,dr.left),
-    top:Math.min(ar.top,br.top,cr.top,dr.top),
-    right:Math.max(ar.right,br.right,cr.right,dr.right),
-    bottom:Math.max(ar.bottom,br.bottom,cr.bottom,dr.bottom)
-  };
+  const a=selectedRows[0][colStart],b=selectedRows[0][colStart+1],c=selectedRows[1][colStart],d=selectedRows[1][colStart+1];
+  if(!a||!b||!c||!d)return null;
+  const ar=a.getBoundingClientRect(),br=b.getBoundingClientRect(),cr=c.getBoundingClientRect(),dr=d.getBoundingClientRect();
+  return {left:Math.min(ar.left,br.left,cr.left,dr.left),top:Math.min(ar.top,br.top,cr.top,dr.top),right:Math.max(ar.right,br.right,cr.right,dr.right),bottom:Math.max(ar.bottom,br.bottom,cr.bottom,dr.bottom)};
 }
 
 function openHero(){
-  if(heroState!=='square') return;
+  if(heroState!=='square')return;
+  cards.forEach(c=>c.classList.remove('flipped','mobile-open'));
   heroVideo.currentTime=0;
   heroVideo.muted=true;
   heroVideo.play().catch(()=>{});
   originRect=heroCard.getBoundingClientRect();
   const target=heroTarget();
-  if(!target) return;
+  if(!target)return;
   heroCard.classList.add('hero');
   heroCard.style.top=originRect.top+'px';
   heroCard.style.left=originRect.left+'px';
@@ -289,13 +276,13 @@ function openHero(){
 }
 
 function showQuote(){
-  if(heroState!=='hero') return;
+  if(heroState!=='hero')return;
   heroQuote.classList.add('show');
   heroState='quote';
 }
 
 function closeHero(){
-  if(heroState!=='quote') return;
+  if(heroState!=='quote')return;
   heroQuote.classList.remove('show');
   heroShade.classList.remove('show');
   heroCard.style.top=originRect.top+'px';
@@ -317,16 +304,14 @@ function closeHero(){
 
 heroCard.addEventListener('click',e=>{
   e.stopPropagation();
-  if(heroState==='square') openHero();
-  else if(heroState==='hero') showQuote();
-  else if(heroState==='quote') closeHero();
+  if(heroState==='square')openHero();
+  else if(heroState==='hero')showQuote();
+  else if(heroState==='quote')closeHero();
 });
 
 heroShade.addEventListener('click',()=>{
-  if(heroState==='quote') closeHero();
+  if(heroState==='quote')closeHero();
 });
-
-heroVideo.play().catch(()=>{});
 
 window.addEventListener('resize',()=>{
   if(heroState==='hero'||heroState==='quote'){
